@@ -1,53 +1,44 @@
 import pandas as pd
-import numpy as np
+from SimpleLinearRegression import SimpleLinearRegression
 import matplotlib.pyplot as plt
+import numpy as np
 
-class SimpleLinearRegression:
-	def __init__(self):
-		self.theta0 = 0 # intercept
-		self.theta1 = 0 # slope
-		self.learning_rate = 0.01
-	def learning(self,X,y): # X input, y expected output
-		m = len(X) # how many examples we have
-		for _ in range(100):
-			somme0 = 0
-			somme1 = 0
-			for i in range(m):
-				prediction = self.predict(X[i])
-				error = prediction - y[i]
-				somme0 += error
-				somme1 += error * X[i]
-			tmp_theta0 = self.learning_rate * (somme0 / m)
-			tmp_theta1 = self.learning_rate * (somme1 / m)
-			self.theta0 = self.theta0 - tmp_theta0
-			self.theta1 = self.theta1 - tmp_theta1
-	def predict(self, X): # regression line
-		return self.theta0 + (self.theta1 * X)
-
-def train_model(mileage):
+def learn_from_data(model: SimpleLinearRegression):
 	file = pd.read_csv("data.csv")
 	km = file['km']
 	price = file['price']
+
 	plt.scatter(km,price, color='blue', label='Data Points')
 	plt.title("Mileage vs Car Price")
 	plt.xlabel("Mileage (km)")
 	plt.ylabel("Price (euro)")
 	plt.grid(True)
 
-	normalized_km = km / km.max()
-	normalized_price = price / price.max()
-	machine = SimpleLinearRegression()
-	machine.learning(normalized_km,normalized_price)
-	regression_line = machine.predict(normalized_km) * price.max()
-	plt.plot(km, regression_line, color='red', label='Regression Line')
+	model.train(km,price)
+
+	sorted_km = np.sort(km)
+
+	plt.plot(
+		sorted_km,
+		model.predict(sorted_km / model.max_X) * model.max_y,
+		color='red',
+		label='Regression Line'
+	)
 	plt.show()
 
-	mileage = float(mileage)
-	normalized_mileage = mileage / km.max()
-	prediction = machine.predict(normalized_mileage)
-	prediction = prediction * price.max()
-	return prediction
+def main():
+	user_answer = input("Type 0 to train the model, 1 to estimate a price : ")
+	user_answer = int(user_answer)
+	model = SimpleLinearRegression()
+	if user_answer == 0:
+		learn_from_data(model)
+	elif user_answer == 1:
+		mileage = input("Enter mileage: ")
+		mileage = float(mileage)
+		prediction = model.predict(mileage)
+		print("Estimated price: ",prediction)
+	else:
+		raise TypeError("Wrong input")
 
-mileage = input("Enter mileage: ")
-res = train_model(mileage)
-print("Estimated price: ",res)
+if __name__ == "__main__":
+	main()
