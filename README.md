@@ -55,6 +55,43 @@ Generated graphs:
 
 # Mathematical Background
 
+## Normalization
+
+Before training the model, the mileage values are normalized.
+
+In the dataset, mileage values can be very large:
+
+```text
+km = 240000
+price = 4000
+```
+
+The difference in scale between mileage and price can make Gradient Descent slower and less stable.
+
+To avoid this problem, the mileage values are transformed using:
+
+```text
+X_norm = (X - mean(X)) / std(X)
+```
+
+After normalization, the values are centered around 0 and usually fall within a much smaller range.
+
+Example:
+
+```text
+Original km values:
+[50000, 100000, 150000]
+
+Normalized values:
+[-1.22, 0.00, 1.22]
+```
+
+This allows Gradient Descent to converge faster and makes the parameter updates more consistent during training.
+
+Once training is finished, the parameters are converted back to the original scale so that predictions can be made using real mileage values.
+
+---
+
 ## Goal of the Best-Fit Line
 
 Linear Regression tries to find the line that best represents the relationship between mileage and price.
