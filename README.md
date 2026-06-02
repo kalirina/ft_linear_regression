@@ -61,16 +61,14 @@ Linear Regression tries to find the line that best represents the relationship b
 
 The regression line is defined by:
 
-[
-y = \theta_0 + \theta_1 x
-]
+**y = theta_0 + theta_1 * x**
 
 Where:
 
-* (x) = mileage
-* (y) = predicted price
-* (\theta_0) = intercept
-* (\theta_1) = slope
+* x = mileage
+* y = predicted price
+* theta_0 = intercept
+* theta_1 = slope
 
 Example:
 
@@ -78,7 +76,7 @@ Example:
     <img src="https://media.geeksforgeeks.org/wp-content/uploads/20260112155359063476/observed_value.webp" width="500">
 </p>
 
-The objective is to find the values of (\theta_0) and (\theta_1) that produce the best possible line.
+The objective is to find the values of `theta_0` and `theta_1` that produce the **best possible line**.
 
 ---
 
@@ -88,15 +86,11 @@ To know whether a line is good or bad, we measure its error.
 
 For each point:
 
-[
-error = prediction - actual
-]
+**error = prediction - actual_value**
 
 The Mean Squared Error is:
 
-[
-MSE = \frac{1}{m}\sum_{i=1}^{m}(prediction_i - y_i)^2
-]
+MSE = (1 / m) * Σ (prediction - y)^2
 
 The square prevents positive and negative errors from cancelling each other.
 
@@ -108,19 +102,13 @@ A smaller MSE means a better model.
 
 Instead of directly minimizing the MSE, Linear Regression usually uses the Cost Function:
 
-[
-J(\theta)=\frac{1}{2m}\sum_{i=1}^{m}(prediction_i-y_i)^2
-]
+**J(theta) = (1 / (2m)) * Σ (prediction - y)^2**
 
 This is simply the MSE multiplied by (1/2).
 
 The factor (1/2) simplifies the derivatives used during Gradient Descent.
 
-The objective of training is:
-
-[
-\min J(\theta)
-]
+The objective of training is to **minimize the Cost Function** J(theta).
 
 ---
 
@@ -128,27 +116,17 @@ The objective of training is:
 
 To know how to improve the line, we compute the derivatives of the Cost Function.
 
-Derivative with respect to (\theta_0):
+Derivative with respect to `theta_0`:
 
-[
-\frac{\partial J}{\partial \theta_0}
-====================================
+**∂J/∂theta0 = (1 / m) * Σ (prediction - y)**
 
-\frac{1}{m}
-\sum(prediction-y)
-]
+Derivative with respect to `theta_1`:
 
-Derivative with respect to (\theta_1):
+**∂J/∂theta1 = (1 / m) * Σ((prediction - y) * x)**
 
-[
-\frac{\partial J}{\partial \theta_1}
-====================================
+These derivatives form the **gradient** of the Cost Function.
 
-\frac{1}{m}
-\sum(prediction-y)x
-]
-
-These derivatives indicate the direction in which the parameters should move.
+The gradient indicates the direction in which the parameters should move to reduce the Cost Function.
 
 ---
 
@@ -158,19 +136,19 @@ Gradient Descent is an optimization algorithm used to minimize the Cost Function
 
 At each iteration:
 
-[
-\theta_0 := \theta_0 - \alpha \frac{\partial J}{\partial \theta_0}
-]
+**theta0 = theta0 - α * (∂J/∂theta0)**
 
-[
-\theta_1 := \theta_1 - \alpha \frac{\partial J}{\partial \theta_1}
-]
+**theta1 = theta1 - α * (∂J/∂theta1)**
 
 Where:
 
-* (\alpha) = learning rate
+* α (alpha) = learning rate
 
-The process is repeated many times until the Cost Function becomes small.
+The gradient points toward increasing cost, so we subtract it to move toward lower cost.
+
+At each iteration, the regression line gets closer to the best-fit line and the Cost Function becomes smaller.
+
+This process is repeated until the parameters converge to values that minimize the Cost Function.
 
 ---
 
@@ -215,60 +193,55 @@ R² measures how well the regression line explains the data.
 
 First:
 
-[
-SS_{res}
-========
-
-\sum(y-\hat y)^2
-]
+```text
+SSres = Σ(y - y_pred)^2
+```
 
 Residual Sum of Squares.
 
+It measures the variation that is not explained by the model.
+
 Then:
 
-[
-SS_{tot}
-========
-
-\sum(y-\bar y)^2
-]
+```text
+SStot = Σ(y - mean(y))^2
+```
 
 Total Sum of Squares.
 
+It measures the total variation present in the dataset.
+
 Finally:
 
-[
-R^2
-===
-
-1-\frac{SS_{res}}{SS_{tot}}
-]
+```text
+R² = 1 - (SSres / SStot)
+```
 
 Interpretation:
 
-* (R^2 = 1) → perfect model
-* (R^2 = 0) → predicts no better than the mean
-* (R^2 < 0) → worse than predicting the mean
+* `R² = 1` → perfect predictions
+* `R² = 0` → predicts no better than the mean
+* `R² < 0` → worse than predicting the mean
 
-The closer R² is to 1, the better the model fits the data.
+The closer R² is to 1, the better the regression line fits the data.
 
 ---
 
 ## Resources
 
-### Documentation
+### Technologies
 
-* Python Documentation
-* NumPy Documentation
-* Pandas Documentation
-* Matplotlib Documentation
+* Python
+* NumPy
+* Pandas
+* Matplotlib
 
 ### Articles & Tutorials
 
-* GeeksForGeeks — Linear Regression
-* Andrew Ng's Machine Learning Course
-* StatQuest — Linear Regression
-* 3Blue1Brown — Gradient Descent
+* GeeksForGeeks — [Linear Regression in Machine learning](https://www.geeksforgeeks.org/machine-learning/ml-linear-regression/)
+* WikipediA - [Gradient descent](https://en.wikipedia.org/wiki/Gradient_descent)
+* MATLAB - [What Is a Linear Regression Model?](https://www.mathworks.com/help/stats/what-is-linear-regression.html)
+* GeeksForGeeks - [Gradient Descent in Linear Regression](https://www.geeksforgeeks.org/machine-learning/gradient-descent-in-linear-regression/)
 
 ### AI Usage
 
