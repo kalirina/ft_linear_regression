@@ -6,10 +6,10 @@ class SimpleLinearRegression:
         self.theta0 = 0.0  # intercept
         self.theta1 = 0.0  # slope
         self.learning_rate = 0.1
-        self.r2 = 0.0
-        self.X_line = []
-        self.y_line = []
-        self.loss_history = []
+        self.r2 = None
+        self.X_line = None
+        self.y_line = None
+        self.loss_history = None
 
     def train(self, X, y):  # X input, y expected output
         m = len(X)
