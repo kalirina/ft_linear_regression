@@ -1,11 +1,11 @@
 import pandas as pd
 from SimpleLinearRegression import SimpleLinearRegression
 import matplotlib.pyplot as plt
-import numpy as np
 
-def graph(km,price,model):
+
+def graph(km, price, model):
     plt.figure(figsize=(10, 6))
-    plt.scatter(km,price, color='blue', label='Data Points')
+    plt.scatter(km, price, color='blue', label='Data Points')
     plt.title("Mileage vs Car Price")
     plt.xlabel("Mileage (km)")
     plt.ylabel("Price (euro)")
@@ -24,21 +24,36 @@ def graph(km,price,model):
 
     plt.savefig("graphs/loss.png")
 
+
 def main():
     model = SimpleLinearRegression()
 
-    mileage = input("Enter mileage: ")
-    # PARSING
-    mileage = float(mileage)
+    try:
+        mileage = float(input("Enter mileage: "))
+    except ValueError:
+        print("Error: mileage must be a number.")
+        return
+    if mileage < 0:
+        print("Error: mileage cannot be negative.")
+        return
+    if mileage > 240000:
+        print("Warning: mileage exceeds training data range.")
+        return
 
-    file = pd.read_csv("data/data.csv")
+    try:
+        file = pd.read_csv("data/data.csv")
+    except FileNotFoundError:
+        print("Error: data/data.csv not found.")
+        return
     km = file['km']
     price = file['price']
-    model.train(km,price)
-    graph(km,price,model)
+
+    model.train(km, price)
+    graph(km, price, model)
 
     prediction = model.predict(mileage)
-    print("Estimated price: ",prediction)
+    print("Estimated price: ", prediction)
+
 
 if __name__ == "__main__":
     main()

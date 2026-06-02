@@ -1,185 +1,282 @@
+*This project has been created as part of the 42 curriculum by irkalini.*
+
 # ft_linear_regression
 
-A simple implementation of linear regression in Python. This project introduces the basics of machine learning by training a model to predict values using gradient descent.
+## Description
+
+This project introduces the fundamentals of Machine Learning through a simple Linear Regression model.
+
+The goal is to predict the price of a car based on its mileage using Gradient Descent. The model learns the best regression line from a dataset and then uses it to estimate prices for new mileage values.
+
+![Regression Line](graphs/graph.png)
 
 ---
 
-## 📚 Project Overview
+## Instructions
 
-The goal of this project is to understand how linear regression works internally without using machine learning libraries such as Scikit-learn.
+Run the project:
 
-The program:
+```bash
+make
+```
 
-* Reads a dataset
-* Trains a linear regression model
-* Finds the best values for:
+Clean generated graphs:
 
-  * `theta0` (intercept)
-  * `theta1` (slope)
-* Predicts values using the trained model
-* Displays the precision of the model
+```bash
+make clean
+```
 
-This project was developed as part of the curriculum at 42 Paris school
-
----
-
-## 🧠 What is Linear Regression?
-
-Linear regression is a machine learning algorithm used to predict a value based on another value.
-
-The formula of a simple linear regression is:
+Example output:
 
 ```text
-estimatePrice(mileage) = theta0 + (theta1 * mileage)
+Enter mileage: 60000
+
+theta0: 8499.567017717669
+theta1: -0.0214488430255591
+
+Precision (R²): 0.73
+
+Estimated price: 7212.636436184123
 ```
+
+Meaning:
+
+* `theta0` → line intercept
+* `theta1` → line slope
+* `R²` → model accuracy
+* `Estimated price` → predicted car price
+
+Generated graphs:
+
+* `graphs/graph.png` → regression line
+* `graphs/loss.png` → loss curve
+
+---
+
+# Mathematical Background
+
+## Goal of the Best-Fit Line
+
+Linear Regression tries to find the line that best represents the relationship between mileage and price.
+
+The regression line is defined by:
+
+[
+y = \theta_0 + \theta_1 x
+]
 
 Where:
 
-* `theta0` = intercept
-* `theta1` = slope
-* `mileage` = input value
-* `estimatePrice` = predicted value
+* (x) = mileage
+* (y) = predicted price
+* (\theta_0) = intercept
+* (\theta_1) = slope
 
-The algorithm improves `theta0` and `theta1` using **gradient descent**.
+Example:
 
----
+<p align="center">
+    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20260112155359063476/observed_value.webp" width="500">
+</p>
 
-## ⚙️ Features
-
-* CSV dataset parsing
-* Data normalization
-* Gradient descent implementation
-* Prediction program
-* Training visualization with graphs
-* Error calculation
-* Model parameter saving/loading
+The objective is to find the values of (\theta_0) and (\theta_1) that produce the best possible line.
 
 ---
 
-## 🚀 Installation
+## Measuring Error: Mean Squared Error (MSE)
 
-Clone the repository:
+To know whether a line is good or bad, we measure its error.
 
-```bash
-git clone https://github.com/kalirina/ft_linear_regression ft_linear_regression
-cd ft_linear_regression
-```
+For each point:
 
-Install dependencies:
+[
+error = prediction - actual
+]
 
-```bash
-pip install -r requirements.txt
-```
+The Mean Squared Error is:
 
----
+[
+MSE = \frac{1}{m}\sum_{i=1}^{m}(prediction_i - y_i)^2
+]
 
-## ▶️ Usage
+The square prevents positive and negative errors from cancelling each other.
 
-### 1. Train the model
-
-```bash
-python training.py
-```
-
-This will:
-
-* Read the dataset
-* Train the model
-* Save the values of `theta0` and `theta1`
+A smaller MSE means a better model.
 
 ---
 
-### 2. Predict a value
+## Cost Function
 
-```bash
-python predict.py
-```
+Instead of directly minimizing the MSE, Linear Regression usually uses the Cost Function:
 
-Then enter a mileage value:
+[
+J(\theta)=\frac{1}{2m}\sum_{i=1}^{m}(prediction_i-y_i)^2
+]
 
-```text
-Enter mileage: 42000
-Estimated price: 12500
-```
+This is simply the MSE multiplied by (1/2).
 
----
+The factor (1/2) simplifies the derivatives used during Gradient Descent.
 
-## 📊 Gradient Descent
+The objective of training is:
 
-Gradient descent updates the parameters step by step to minimize the prediction error.
-
-Update formulas:
-
-```text
-theta0 = theta0 - learningRate * error0
-theta1 = theta1 - learningRate * error1
-```
-
-The cost decreases over time until the model converges.
+[
+\min J(\theta)
+]
 
 ---
 
-## 📈 Data Visualization
+## Derivatives
 
-You can visualize:
+To know how to improve the line, we compute the derivatives of the Cost Function.
 
-* The dataset points
-* The regression line
-* The evolution of the cost function
+Derivative with respect to (\theta_0):
 
-Example libraries:
+[
+\frac{\partial J}{\partial \theta_0}
+====================================
 
-* matplotlib
-* numpy
-* pandas
+\frac{1}{m}
+\sum(prediction-y)
+]
 
----
+Derivative with respect to (\theta_1):
 
-## 🧪 Example
+[
+\frac{\partial J}{\partial \theta_1}
+====================================
 
-Dataset:
+\frac{1}{m}
+\sum(prediction-y)x
+]
 
-| Mileage | Price |
-| ------- | ----- |
-| 10000   | 18000 |
-| 30000   | 15000 |
-| 50000   | 12000 |
-
-After training:
-
-```text
-theta0 = 21000
-theta1 = -0.18
-```
-
-Prediction:
-
-```text
-estimatePrice(40000) = 13800
-```
+These derivatives indicate the direction in which the parameters should move.
 
 ---
 
-## 🛠 Technologies
+## Gradient Descent
 
-* Python
-* NumPy
-* Pandas
-* Matplotlib
+Gradient Descent is an optimization algorithm used to minimize the Cost Function.
+
+At each iteration:
+
+[
+\theta_0 := \theta_0 - \alpha \frac{\partial J}{\partial \theta_0}
+]
+
+[
+\theta_1 := \theta_1 - \alpha \frac{\partial J}{\partial \theta_1}
+]
+
+Where:
+
+* (\alpha) = learning rate
+
+The process is repeated many times until the Cost Function becomes small.
 
 ---
 
-## 📖 Resources
+## Loss Curve
 
-Useful resources:
+During training, the Cost Function is recorded at each iteration.
 
-* Linear Regression
-* Gradient Descent
-* Mean Squared Error (MSE)
-* Normalization
+Example:
+
+<p align="center">
+    <img src="graphs/loss.png" width="600">
+</p>
+
+The graph shows:
+
+* X-axis → iterations
+* Y-axis → loss value
+
+A decreasing curve indicates that the model is learning correctly.
 
 ---
 
-## 👤 Author
+## Regression Line
 
-Made by irkalini at 42 Paris school .
+After training, the model produces a regression line.
+
+Example:
+
+<p align="center">
+    <img src="graphs/graph.png" width="600">
+</p>
+
+The blue points represent the dataset.
+
+The red line represents the predictions produced by the model.
+
+---
+
+## Coefficient of Determination (R²)
+
+R² measures how well the regression line explains the data.
+
+First:
+
+[
+SS_{res}
+========
+
+\sum(y-\hat y)^2
+]
+
+Residual Sum of Squares.
+
+Then:
+
+[
+SS_{tot}
+========
+
+\sum(y-\bar y)^2
+]
+
+Total Sum of Squares.
+
+Finally:
+
+[
+R^2
+===
+
+1-\frac{SS_{res}}{SS_{tot}}
+]
+
+Interpretation:
+
+* (R^2 = 1) → perfect model
+* (R^2 = 0) → predicts no better than the mean
+* (R^2 < 0) → worse than predicting the mean
+
+The closer R² is to 1, the better the model fits the data.
+
+---
+
+## Resources
+
+### Documentation
+
+* Python Documentation
+* NumPy Documentation
+* Pandas Documentation
+* Matplotlib Documentation
+
+### Articles & Tutorials
+
+* GeeksForGeeks — Linear Regression
+* Andrew Ng's Machine Learning Course
+* StatQuest — Linear Regression
+* 3Blue1Brown — Gradient Descent
+
+### AI Usage
+
+AI was used to:
+
+* Explain the mathematical concepts behind Linear Regression.
+* Review the implementation of Gradient Descent.
+* Verify formulas and derivations.
+* Improve documentation and project presentation.
+
+The final implementation, debugging, testing and project understanding were completed manually.
