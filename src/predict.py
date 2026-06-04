@@ -17,6 +17,10 @@ def main():
     except (ValueError, EOFError):
         print("Error: invalid or missing input.")
         return
+    except KeyboardInterrupt:
+        print("\nProgram cancelled.")
+        return
+
     if mileage < 0:
         print("Error: mileage cannot be negative.")
         return
