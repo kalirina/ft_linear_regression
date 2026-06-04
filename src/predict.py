@@ -7,7 +7,7 @@ def predict(x):
         with open("data/thetas.json", "r") as read_file:
             data = json.load(read_file)
             return data["theta0"] + data["theta1"] * x
-    except:
+    except FileNotFoundError:
         return 0
 
 

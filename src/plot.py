@@ -51,7 +51,8 @@ def point_in_graph(x, y):
     plt.plot(X_line, y_line, color="red", label="Regression line")
 
     plt.scatter(x, y, color='green', s=150, marker="x", label='Estimation')
-    plt.annotate(f"({x:.0f}, {y:.0f})", (x, y), textcoords="offset points", xytext=(10, 10))
+    plt.annotate(f"({x:.0f}, {y:.0f})", (x, y),
+                 textcoords="offset points", xytext=(10, 10))
 
     plt.legend()
     plt.grid(True)

@@ -42,6 +42,7 @@ def train(X, y):  # X input, y expected output
     r2 = 1 - (ss_res / ss_tot)
     print(f"Precision (R**2): {r2:.2f}")
 
+
 def main():
     try:
         file = pd.read_csv("data/data.csv")
