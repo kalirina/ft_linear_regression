@@ -8,48 +8,67 @@ This project introduces the fundamentals of Machine Learning through a simple Li
 
 The goal is to predict the price of a car based on its mileage using Gradient Descent. The model learns the best regression line from a dataset and then uses it to estimate prices for new mileage values.
 
-![Regression Line](graphs/graph.png)
+![Regression Line](assets/data_and_line.png)
 
 ---
 
 ## Instructions
 
-Run the project:
+### Train the model:
 
 ```bash
-make
-```
-
-Clean generated graphs:
-
-```bash
-make clean
+make train
 ```
 
 Example output:
 
 ```text
-Enter mileage: 60000
-
-theta0: 8499.567017717669
-theta1: -0.0214488430255591
-
-Precision (R²): 0.73
-
-Estimated price: 7212.636436184123
+theta0: 8499.567017717669, theta1: -0.0214488430255591
+Precision (R**2): 0.73
 ```
-
 Meaning:
 
 * `theta0` → line intercept
 * `theta1` → line slope
 * `R²` → model accuracy
-* `Estimated price` → predicted car price
 
-Generated graphs:
+After training, the model generates:
+- regression graph (`graphs/graph.png`)
+- loss curve (`graphs/loss.png`)
 
-* `graphs/graph.png` → regression line
-* `graphs/loss.png` → loss curve
+### Run prediction:
+
+```bash
+make predict
+```
+
+Example output:
+
+```text
+Enter mileage: 50000
+Estimated price:  7427.1248664397135
+```
+
+The file `graphs/graph.png` is regenerated with the predicted value shown on the graph.
+
+### Clean generated files
+
+```bash
+make clean
+```
+
+Removes generated graphs.
+
+### Full cleanup
+
+```bash
+make fclean
+```
+
+Removes:
+- generated graphs
+- saved model (`data/thetas.json`)
+- virtual environment (`.venv`)
 
 ---
 
@@ -196,7 +215,7 @@ During training, the Cost Function is recorded at each iteration.
 Example:
 
 <p align="center">
-    <img src="graphs/loss.png" width="600">
+    <img src="assets/loss_curve.png" width="600">
 </p>
 
 The graph shows:
@@ -215,7 +234,7 @@ After training, the model produces a regression line.
 Example:
 
 <p align="center">
-    <img src="graphs/graph.png" width="600">
+    <img src="assets/data_and_line.png" width="600">
 </p>
 
 The blue points represent the dataset.
